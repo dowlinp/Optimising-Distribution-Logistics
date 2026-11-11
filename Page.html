@@ -3,18 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Thin Slice Implementation</title>
+	
+    <title>Thin Slice Implementation</title>
   <style>
     body { font-family: sans-serif; max-width: 480px; margin: 40px auto; text-align: center; }
     button { padding: 10px 20px; margin: 6px; font-size: 16px; cursor: pointer; }
     #output { margin-top: 20px; font-size: 20px; }
+
     .fab-group {
       position: absolute;
-      top: 30%;
+      top: 5%;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
-      flex-direction: row;
+      flex-direction: column; /* Stacks the rows vertically */
+      gap: 10px;
+      z-index: 1000;
+    }
+    .fab-row {
+      display: flex;
+      flex-direction: row; /* Keeps buttons side-by-side inside each row */
       gap: 10px;
     }
     .fab {
@@ -30,15 +38,25 @@
   </style>
 </head>
 <body>
-  <h1>Hello!</h1>
-  <p id="output">Click a floating button...</p>
- 
-  <div class="fab-group">
-    <button class="fab" onclick="show('Plus clicked')">+</button>
-    <button class="fab" onclick="show('Settings clicked')">&#9881;</button>
-    <button class="fab" onclick="show('Warning clicked')">&#9888;</button>
-    <button class="fab" onclick="show('Minus clicked')">-</button>
-</div>
+    
+    <div class="fab-group">
+      <div class="fab-row">
+        <button class="fab" onclick="show('White King clicked')">&#9812;</button>
+        <button class="fab" onclick="show('White Queen clicked')">&#9813;</button>
+        <button class="fab" onclick="show('White Rook clicked')">&#9814;</button>
+        <button class="fab" onclick="show('Bishop clicked')">&#9815;</button>
+        <button class="fab" onclick="show('White Knight clicked')">&#9816;</button>
+        <button class="fab" onclick="show('White Pawn clicked')">&#9817;</button>
+        </div>
+      <div class="fab-row">
+        <button class="fab" onclick="show('Black King clicked')">&#9818;</button>
+        <button class="fab" onclick="show('Black Queen clicked')">&#9819;</button>
+        <button class="fab" onclick="show('Black Rook clicked')">&#9820;</button>
+        <button class="fab" onclick="show('Bishop clicked')">&#9821;</button>
+        <button class="fab" onclick="show('Black Knight clicked')">&#9822;</button>
+        <button class="fab" onclick="show('Black Pawn clicked')">&#9823;</button>
+      </div>
+    </div>
  
   <script>
     function show(text) {

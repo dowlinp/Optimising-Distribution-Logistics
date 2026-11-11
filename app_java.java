@@ -20,6 +20,15 @@ public class App {
             exchange.close();
         });
 
+        // "/delivery" serves delivery.html
+        server.createContext("/delivery", exchange -> {
+            byte[] body = Files.readAllBytes(Path.of("delivery.html"));
+            exchange.getResponseHeaders().set("Content-Type", "text/html; charset=utf-8");
+            exchange.sendResponseHeaders(200, body.length);
+            exchange.getResponseBody().write(body);
+            exchange.close();
+        });
+
         server.start();
         System.out.println("Running on http://" + host + ":5000");
     }
