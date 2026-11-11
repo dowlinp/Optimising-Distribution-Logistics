@@ -36,22 +36,72 @@
     }
     .fab:hover { background: #000000; color: #ffffff;}
     
-    .redirect-button {
+        .menu {
       position: fixed;
       top: 5%;
       left: 5%;
       width: 50px;
       height: 50px;
-      border-radius: 10%;          
+      border-radius: 10%;
       font-size: 25px;
       cursor: pointer;
       background: #ffffff;
       color: #000000;
+      border: 2px solid #000000;
     }
-    .redirect-button:hover { background: #000000; color: #ffffff;}
-  
+
+    .menu:hover {
+      background: #000000;
+      color: #ffffff;
+    }
+.close-menu {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    font-size: 25px;
+    cursor: pointer;
+    background: white;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+    .side-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100%;
+    background: white;
+    border-right: 2px solid black;
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 1000;
+
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+.side-panel.open {
+    transform: translateX(0);
+}
+
+.side-panel a {
+    display: block;
+    padding: 15px;
+    color: black;
+    text-decoration: none;
+    border-bottom: 1px solid #ddd;
+}
+
+.side-panel a:hover {
+    background: black;
+    color: white;
+}
   </style>
 </head>
+
 <body>
     
     <div class="fab-group">
@@ -72,14 +122,32 @@
         <button class="fab" onclick="show('Black Pawn clicked')">&#9823;</button>
       </div>
     </div>
-    <button class="redirect-button" onclick="window.location.href='http://127.0.0.1:5000'">
-        &#8962;
-    </button>
- 
+
   <script>
+    function togglePanel() {
+    document.getElementById("sidePanel").classList.toggle("open");
+}
     function show(text) {
       document.getElementById("output").textContent = text;
     }
   </script>
+  <button id="menu" class="menu" onclick="togglePanel()">
+    ☰
+</button>
+
+<div id="sidePanel" class="side-panel">
+
+    <button class="close-menu" onclick="togglePanel()">
+        &times;
+    </button>
+
+    <h2>Menu</h2>
+
+    <a href="/">Home</a>
+    <a href="/User">User</a>
+    <a href="/Warehouse">Warehouse</a>
+    <a href="/Delivery">Delivery</a>
+
+</div>
 </body>
 </html>

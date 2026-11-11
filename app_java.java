@@ -45,6 +45,19 @@ public class App {
             exchange.close();
         });
 
+        server.createContext("/videos/", exchange -> {
+            Path videoPath = Path.of("videos/CityMap2.png");
+
+            byte[] video = Files.readAllBytes(videoPath);
+
+            exchange.getResponseHeaders().set("Content-Type", "video/mp4");
+            exchange.sendResponseHeaders(200, video.length);
+
+            try (var output = exchange.getResponseBody()) {
+                output.write(video);
+            }
+        });
+
         server.start();
         System.out.println("Running on http://" + host + ":5000");
     }

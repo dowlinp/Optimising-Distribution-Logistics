@@ -5,6 +5,8 @@ COPY app_java.java home.html ./
 COPY delivery/ ./delivery/
 COPY frontend/ ./frontend/
 COPY warehouse/ ./warehouse/
+COPY videos/ ./videos/
+
 ENV HOST=0.0.0.0
 EXPOSE 5000
 
