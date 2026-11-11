@@ -8,9 +8,42 @@
     body { font-family: sans-serif; max-width: 480px; margin: 40px auto; text-align: center; }
     button { padding: 10px 20px; margin: 6px; font-size: 16px; cursor: pointer; }
     #output { margin-top: 20px; font-size: 20px; }
+    .fab-group {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+    }
+    .fab {
+      width: 200px;
+      height: 200px;
+      border-radius: 10%;          
+      font-size: 108px;
+      cursor: pointer;
+      background: #ffffff;
+      color: #000000;
+    }
+    .fab:hover { background: #000000; color: #ffffff;}
   </style>
 </head>
 <body>
-    <h1>Hello!</h1>
+  <h1>Hello!</h1>
+  <p id="output">Click a floating button...</p>
+ 
+  <div class="fab-group">
+    <button class="fab" onclick="show('Plus clicked')">+</button>
+    <button class="fab" onclick="show('Settings clicked')">&#9881;</button>
+    <button class="fab" onclick="show('Warning clicked')">&#9888;</button>
+    <button class="fab" onclick="show('Minus clicked')">-</button>
+</div>
+ 
+  <script>
+    function show(text) {
+      document.getElementById("output").textContent = text;
+    }
+  </script>
 </body>
 </html>
