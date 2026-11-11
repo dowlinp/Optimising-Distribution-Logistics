@@ -35,6 +35,21 @@
       color: #000000;
     }
     .fab:hover { background: #000000; color: #ffffff;}
+    
+    .redirect-button {
+      position: fixed;
+      top: 5%;
+      left: 5%;
+      width: 50px;
+      height: 50px;
+      border-radius: 10%;          
+      font-size: 25px;
+      cursor: pointer;
+      background: #ffffff;
+      color: #000000;
+    }
+    .redirect-button:hover { background: #000000; color: #ffffff;}
+  
   </style>
 </head>
 <body>
@@ -57,6 +72,9 @@
         <button class="fab" onclick="show('Black Pawn clicked')">&#9823;</button>
       </div>
     </div>
+    <button class="redirect-button" onclick="window.location.href='http://127.0.0.1:5000'">
+        &#8962;
+    </button>
  
   <script>
     function show(text) {

@@ -13,7 +13,15 @@ public class App {
 
         // "/" serves Page.html
         server.createContext("/", exchange -> {
-            byte[] body = Files.readAllBytes(Path.of("Page.html"));
+            byte[] body = Files.readAllBytes(Path.of("home.html"));
+            exchange.getResponseHeaders().set("Content-Type", "text/html; charset=utf-8");
+            exchange.sendResponseHeaders(200, body.length);
+            exchange.getResponseBody().write(body);
+            exchange.close();
+        });
+
+        server.createContext("/User", exchange -> {
+            byte[] body = Files.readAllBytes(Path.of("frontend/frontend.html"));
             exchange.getResponseHeaders().set("Content-Type", "text/html; charset=utf-8");
             exchange.sendResponseHeaders(200, body.length);
             exchange.getResponseBody().write(body);
@@ -21,8 +29,8 @@ public class App {
         });
 
         // "/delivery" serves delivery.html
-        server.createContext("/delivery", exchange -> {
-            byte[] body = Files.readAllBytes(Path.of("delivery.html"));
+        server.createContext("/Delivery", exchange -> {
+            byte[] body = Files.readAllBytes(Path.of("delivery/delivery.html"));
             exchange.getResponseHeaders().set("Content-Type", "text/html; charset=utf-8");
             exchange.sendResponseHeaders(200, body.length);
             exchange.getResponseBody().write(body);

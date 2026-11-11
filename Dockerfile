@@ -1,8 +1,9 @@
 FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
-COPY app_java.java Page.html delivery.html ./
-
+COPY app_java.java home.html ./
+COPY delivery/ ./delivery/
+COPY frontend/ ./frontend/
 ENV HOST=0.0.0.0
 EXPOSE 5000
 
