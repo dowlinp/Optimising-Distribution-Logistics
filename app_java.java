@@ -28,6 +28,14 @@ public class App {
             exchange.close();
         });
 
+        server.createContext("/Warehouse", exchange -> {
+            byte[] body = Files.readAllBytes(Path.of("warehouse/warehouse.html"));
+            exchange.getResponseHeaders().set("Content-Type", "text/html; charset=utf-8");
+            exchange.sendResponseHeaders(200, body.length);
+            exchange.getResponseBody().write(body);
+            exchange.close();
+        });
+
         // "/delivery" serves delivery.html
         server.createContext("/Delivery", exchange -> {
             byte[] body = Files.readAllBytes(Path.of("delivery/delivery.html"));
