@@ -1,13 +1,10 @@
-FROM python:3.12-slim
+FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY App.py Page.html ./
+COPY app_java.java Page.html ./
 
 ENV HOST=0.0.0.0
 EXPOSE 5000
 
-CMD ["python", "app.py"]
+# Java 11+ can run a single source file directly, no separate compile step
+CMD ["java", "app_java.java"]
