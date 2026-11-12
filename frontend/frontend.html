@@ -156,6 +156,9 @@
     border-bottom: 1px solid #ddd;
 }
 
+.basket-button.hidden {
+    display: none;
+}
   </style>
 </head>
 <body>
@@ -169,40 +172,66 @@ function addToBasket(title) {
 }
 
 function updateBasket() {
-    const list = document.getElementById("basketItems");
-    const count = document.getElementById("basketCount");
+    const basketList = document.getElementById("basketItems");
+    const basketCount = document.getElementById("basketCount");
 
-    count.textContent = basket.length;
-    list.innerHTML = "";
+    basketCount.textContent = basket.length;
+
+    basketList.innerHTML = "";
 
     basket.forEach((item, index) => {
-        const li = document.createElement("li");
 
-        li.textContent = item + " ";
+        const listItem = document.createElement("li");
+        listItem.textContent = item + " ";
 
-        const remove = document.createElement("button");
-        remove.textContent = "X";
+        const removeButton = document.createElement("button");
+        removeButton.textContent = "X";
 
-        remove.onclick = () => {
+        removeButton.onclick = function() {
             basket.splice(index, 1);
             updateBasket();
         };
 
-        li.appendChild(remove);
-        list.appendChild(li);
+        listItem.appendChild(removeButton);
+
+        basketList.appendChild(listItem);
     });
 }
 
 function toggleBasket() {
-    document.getElementById("basketPanel")
-        .classList.toggle("open");
+    const basketPanel = document.getElementById("basketPanel");
+    const basketButton = document.querySelector(".basket-button");
+
+    basketPanel.classList.toggle("open");
+    basketButton.classList.toggle("hidden");
 }
 
 function clearBasket() {
     basket = [];
     updateBasket();
 }
+function checkout() {
+    if (basket.length === 0) {
+        alert("Your basket is empty!");
+        return;
+    }
 
+    let order = "You have selected:\n\n";
+
+    basket.forEach(item => {
+        order += "- " + item + "\n";
+    });
+
+    if (confirm(order + "\nConfirm checkout?")) {
+
+        alert("Order submitted successfully!");
+
+        basket = [];
+        updateBasket();
+
+        toggleBasket();
+    }
+}
 </script>
 <button class="basket-button" onclick="toggleBasket()">
     &#128722;
@@ -217,6 +246,7 @@ function clearBasket() {
 
     <div class="basket-actions">
         <button onclick="clearBasket()">Clear basket</button>
+        <button onclick="checkout()">Checkout</button>
         <button onclick="toggleBasket()">Close</button>
     </div>
 
@@ -268,5 +298,6 @@ function clearBasket() {
     <a href="/Delivery">Delivery</a>
 
 </div>
+
 </body>
 </html>

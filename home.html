@@ -1,163 +1,387 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Navigation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribution Management</title>
 
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 30px;
-      height: 100vh;
-      margin: 0;
-      background: #f0f0f0;
-    }
+    <style>
 
-    .fab {
-      width: 200px;
-      height: 200px;
-      border-radius: 10%;
-      font-size: 108px;
-      cursor: pointer;
-      background: #ffffff;
-      color: #000000;
-      border: 2px solid #000000;
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    .fab:hover {
-      background: #000000;
-      color: #ffffff;
-    }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
 
-    .menu {
-      position: fixed;
-      top: 5%;
-      left: 5%;
-      width: 50px;
-      height: 50px;
-      border-radius: 10%;
-      font-size: 25px;
-      cursor: pointer;
-      background: #ffffff;
-      color: #000000;
-      border: 2px solid #000000;
-    }
+            background-image: url("/videos/CityMap2.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
 
-    .menu:hover {
-      background: #000000;
-      color: #ffffff;
-    }
-.close-menu {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 40px;
-    height: 40px;
-    font-size: 25px;
-    cursor: pointer;
-    background: white;
-    color: black;
-    border: 1px solid black;
-    border-radius: 5px;
-}
-    .side-panel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 280px;
-    height: 100%;
-    background: white;
-    border-right: 2px solid black;
-    padding: 20px;
-    box-sizing: border-box;
-    z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-}
+        /* Central panel */
 
-.side-panel.open {
-    transform: translateX(0);
-}
+        .home-panel {
+            width: 820px;
+            max-width: 90%;
+            padding: 40px;
 
-.side-panel a {
-    display: block;
-    padding: 15px;
-    color: black;
-    text-decoration: none;
-    border-bottom: 1px solid #ddd;
-}
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid #222;
+            border-radius: 10px;
 
-.side-panel a:hover {
-    background: black;
-    color: white;
-}
-/* 
-#background-video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
-    z-index: -1;
-    pointer-events: none;
-} */
- body {
-    background-image: url("/videos/CityMap2.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
-  </style>
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
+        }
+
+        .panel-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #777;
+            margin-bottom: 18px;
+        }
+
+        .home-panel h1 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #111;
+            margin: 0 0 12px 0;
+        }
+
+        .panel-description {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        /* Navigation cards */
+
+        .navigation-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .navigation-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            min-height: 190px;
+            padding: 22px;
+
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+
+            color: #111;
+            text-decoration: none;
+
+            transition: all 0.25s ease;
+        }
+
+        .navigation-card:hover {
+            transform: translateY(-6px);
+            border-color: #111;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            background: #fafafa;
+        }
+
+        .card-icon {
+            font-size: 34px;
+            margin-bottom: 18px;
+        }
+
+        .navigation-card h2 {
+            font-size: 19px;
+            font-weight: 600;
+            margin: 0 0 9px 0;
+        }
+
+        .navigation-card p {
+            font-size: 13px;
+            line-height: 1.5;
+            color: #777;
+            margin: 0 0 20px 0;
+        }
+
+        .card-access {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* Panel footer */
+
+        .panel-footer {
+            display: flex;
+            justify-content: space-between;
+
+            margin-top: 30px;
+            padding-top: 18px;
+
+            border-top: 1px solid #ddd;
+
+            font-size: 10px;
+            letter-spacing: 1px;
+            color: #888;
+        }
+
+        /* Menu button */
+
+        .menu {
+            position: fixed;
+            top: 5%;
+            left: 5%;
+            width: 50px;
+            height: 50px;
+
+            border-radius: 5px;
+            font-size: 25px;
+            cursor: pointer;
+
+            background: white;
+            color: black;
+            border: 2px solid black;
+
+            z-index: 1001;
+            transition: 0.2s;
+        }
+
+        .menu:hover {
+            background: black;
+            color: white;
+        }
+
+        /* Sidebar */
+
+        .side-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            width: 280px;
+            height: 100%;
+
+            background: white;
+            border-right: 2px solid black;
+            padding: 20px;
+
+            z-index: 1002;
+
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .side-panel.open {
+            transform: translateX(0);
+        }
+
+        .side-panel h2 {
+            margin-top: 20px;
+            font-size: 22px;
+        }
+
+        .side-panel a {
+            display: block;
+            padding: 15px;
+
+            color: black;
+            text-decoration: none;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .side-panel a:hover {
+            background: black;
+            color: white;
+        }
+
+        .close-menu {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+
+            width: 40px;
+            height: 40px;
+
+            font-size: 25px;
+            cursor: pointer;
+
+            background: white;
+            color: black;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+
+        /* Smaller screens */
+
+        @media (max-width: 700px) {
+
+            .home-panel {
+                padding: 25px;
+                max-height: 85vh;
+                overflow-y: auto;
+            }
+
+            .navigation-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .navigation-card {
+                min-height: 140px;
+            }
+
+            .home-panel h1 {
+                font-size: 25px;
+            }
+
+        }
+
+    </style>
 </head>
-<script>
-    function togglePanel() {
-        document.getElementById("sidePanel").classList.toggle("open");
-    }
-</script>
+
 <body>
 
-  <button class="fab" onclick="window.location.href='http://127.0.0.1:5000/User'">
-    ☺
-  </button>
+    <!-- Main navigation panel -->
 
-  <button class="fab" onclick="window.location.href='http://127.0.0.1:5000/Delivery'">
-    ⛟
-  </button>
+    <main class="home-panel">
 
-  <button class="fab" onclick="window.location.href='http://127.0.0.1:5000/Warehouse'">
-    &#9636;
-  </button>
+        <div class="panel-label">
+            LOGISTICS MANAGEMENT SYSTEM
+        </div>
 
-<button id="menu" class="menu" onclick="togglePanel()">
-    ☰
-</button>
+        <h1>Distribution Management</h1>
 
-<div id="sidePanel" class="side-panel">
+        <p class="panel-description">
+            Manage the operational activities of your distribution network.
+        </p>
 
-    <button class="close-menu" onclick="togglePanel()">
-        &times;
+        <div class="navigation-cards">
+
+            <!-- Customers -->
+
+            <a href="/User" class="navigation-card">
+
+                <div>
+                    <div class="card-icon">♙</div>
+
+                    <h2>Customers</h2>
+
+                    <p>
+                        Manage customer accounts, orders and requests.
+                    </p>
+                </div>
+
+                <div class="card-access">
+                    ACCESS &nbsp; →
+                </div>
+
+            </a>
+
+
+            <!-- Warehouse -->
+
+            <a href="/Warehouse" class="navigation-card">
+
+                <div>
+                    <div class="card-icon">▤</div>
+
+                    <h2>Warehouse</h2>
+
+                    <p>
+                        Manage inventory, stock and order processing.
+                    </p>
+                </div>
+
+                <div class="card-access">
+                    ACCESS &nbsp; →
+                </div>
+
+            </a>
+
+
+            <!-- Deliveries -->
+
+            <a href="/Delivery" class="navigation-card">
+
+                <div>
+                    <div class="card-icon">▣</div>
+
+                    <h2>Deliveries</h2>
+
+                    <p>
+                        Plan delivery routes and monitor distribution.
+                    </p>
+                </div>
+
+                <div class="card-access">
+                    ACCESS &nbsp; →
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <!-- Footer -->
+
+        <div class="panel-footer">
+
+            <span>DISTRIBUTION OPERATIONS</span>
+
+            <span>EST. 2026</span>
+
+        </div>
+
+    </main>
+
+
+    <!-- Menu button -->
+
+    <button class="menu" onclick="togglePanel()">
+        ☰
     </button>
 
-    <h2>Menu</h2>
 
-    <a href="/">Home</a>
-    <a href="/User">User</a>
-    <a href="/Warehouse">Warehouse</a>
-    <a href="/Delivery">Delivery</a>
+    <!-- Sidebar -->
 
-</div>
-<!-- 
-<video autoplay muted loop playsinline id="background-video">
-    <source src="/videos/BigMap.mp4" type="video/mp4">
-</video> -->
+    <div id="sidePanel" class="side-panel">
+
+        <button class="close-menu" onclick="togglePanel()">
+            &times;
+        </button>
+
+        <h2>Menu</h2>
+
+        <a href="/">Home</a>
+        <a href="/User">Customers</a>
+        <a href="/Warehouse">Warehouse</a>
+        <a href="/Delivery">Deliveries</a>
+
+    </div>
+
+
+    <script>
+
+        function togglePanel() {
+
+            document.getElementById("sidePanel")
+                .classList.toggle("open");
+
+        }
+
+    </script>
 
 </body>
-
 </html>

@@ -58,6 +58,85 @@ public class App {
             }
         });
 
+        // server.createContext("/api/delivery/", exchange -> {
+
+        //     String orderId = exchange.getRequestURI()
+        //                             .getPath()
+        //                             .replace("/api/delivery/", "");
+
+        //     // Run the Python route generator
+        //     ProcessBuilder pb = new ProcessBuilder(
+        //         "python3",
+        //         "routing/generate_kml.py",
+        //         orderId
+        //     );
+
+        //     pb.redirectErrorStream(true);
+
+        //     Process process = pb.start();
+        //     String output = new String(process.getInputStream().readAllBytes());
+
+        //     int exitCode = process.waitFor();
+
+        //     String response;
+
+        //     if (exitCode == 0) {
+        //         response = output;
+        //     } else {
+        //         exchange.sendResponseHeaders(500, 0);
+        //         exchange.getResponseBody().write(output.getBytes());
+        //         exchange.close();
+        //         return;
+        //     }
+
+        //     byte[] body = response.getBytes();
+
+        //     exchange.getResponseHeaders().set(
+        //         "Content-Type", "text/plain; charset=utf-8"
+        //     );
+
+        //     exchange.sendResponseHeaders(200, body.length);
+        //     exchange.getResponseBody().write(body);
+        //     exchange.close();
+        // });
+
+        
+        server.createContext("/routes/", exchange -> {
+
+            String filename = exchange.getRequestURI().getPath().replace("/routes/", "");
+
+            // Only allow GeoJSON files
+            if (!filename.matches("[a-zA-Z0-9_-]+\\.geojson")) {
+                exchange.sendResponseHeaders(400, -1);
+                exchange.close();
+                return;
+            }
+
+            Path routesFolder = Path.of("delivery/routes")
+                                    .toAbsolutePath()
+                                    .normalize();
+
+            Path file = routesFolder.resolve(filename).normalize();
+
+            if (!file.startsWith(routesFolder) || !Files.exists(file)) {
+                exchange.sendResponseHeaders(404, -1);
+                exchange.close();
+                return;
+            }
+
+            byte[] body = Files.readAllBytes(file);
+
+            exchange.getResponseHeaders().set(
+                "Content-Type", "application/geo+json"
+            );
+
+            exchange.sendResponseHeaders(200, body.length);
+
+            try (var output = exchange.getResponseBody()) {
+                output.write(body);
+            }
+        });
+
         server.start();
         System.out.println("Running on http://" + host + ":5000");
     }
