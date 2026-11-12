@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,7 +18,6 @@
     <title>Delivery Map</title>
 
     <style>
-
         body {
             width: 100%;
             height: 100%;
@@ -104,12 +102,10 @@
             background: black;
             color: white;
         }
-
     </style>
 </head>
 
 <body>
-
     <div id="map"></div>
 
     <!-- Map and route -->
@@ -134,72 +130,31 @@
             }
         ).addTo(map);
 
-
         // Load delivery route
-        async function loadDeliveryRoute() {
+        console.log("Loading delivery route...");
 
-            try {
+        const response = await fetch(
+            "/routes/order_123.geojson"
+        );
 
-                console.log("Loading delivery route...");
+        const data = await response.json();
 
-                const response = await fetch(
-                    "/routes/order_123.geojson"
-                );
+        // Add GeoJSON to map
+        const routeLayer = new GeoJSON(data, {
 
-                if (!response.ok) {
-                    throw new Error(
-                        "Could not load route: " + response.status
-                    );
-                }
-
-                const data = await response.json();
-
-                // Add GeoJSON to map
-                const routeLayer = new GeoJSON(data, {
-
-                    style: function(feature) {
-
-                        return {
-                            color: "blue",
-                            weight: 5,
-                            opacity: 0.9
-                        };
-
-                    }
-
-                });
-
-                routeLayer.addTo(map);
-
-                // Zoom to route
-                if (routeLayer.getLayers().length > 0) {
-
-                    map.fitBounds(
-                        routeLayer.getBounds(),
-                        { padding: [40, 40] }
-                    );
-
-                    console.log("Delivery route loaded!");
-
-                } else {
-
-                    console.warn("GeoJSON contains no route features.");
-
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "Failed to load delivery route:",
-                    error
-                );
-
+            style: function (feature) {
+                return {
+                    color: "blue",
+                    weight: 5,
+                    opacity: 0.9
+                };
             }
 
-        }
+        });
 
-        // Load route when page opens
-        loadDeliveryRoute();
+        routeLayer.addTo(map);
+
+
 
     </script>
 
@@ -237,4 +192,5 @@
     </script>
 
 </body>
+
 </html>

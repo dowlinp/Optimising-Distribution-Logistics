@@ -1,303 +1,329 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	
+
     <title>Thin Slice Implementation</title>
-  <style>
-    body { font-family: sans-serif; max-width: 480px; margin: 40px auto; text-align: center; }
-    button { padding: 10px 20px; margin: 6px; font-size: 16px; cursor: pointer; }
-    #output { margin-top: 20px; font-size: 20px; }
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 480px;
+            margin: 40px auto;
+            text-align: center;
+        }
 
-    .fab-group {
-      position: absolute;
-      bottom: 5%;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column; /* Stacks the rows vertically */
-      gap: 10px;
-      z-index: 1000;
-    }
-    .fab-row {
-      display: flex;
-      flex-direction: row; /* Keeps buttons side-by-side inside each row */
-      gap: 10px;
-    }
-    .fab {
-      width: 200px;
-      height: 200px;
-      border-radius: 10%;          
-      font-size: 108px;
-      cursor: pointer;
-      background: #ffffff;
-      color: #000000;
-    }
-    .fab:hover { background: #000000; color: #ffffff;}
-    
+        button {
+            padding: 10px 20px;
+            margin: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #output {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+
+        .fab-group {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .fab-row {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+        }
+
+        .fab {
+            width: 200px;
+            height: 200px;
+            border-radius: 10%;
+            font-size: 108px;
+            cursor: pointer;
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .fab:hover {
+            background: #000000;
+            color: #ffffff;
+        }
+
         .menu {
-      position: fixed;
-      top: 5%;
-      left: 5%;
-      width: 50px;
-      height: 50px;
-      border-radius: 10%;
-      font-size: 25px;
-      cursor: pointer;
-      background: #ffffff;
-      color: #000000;
-      border: 2px solid #000000;
-    }
+            position: fixed;
+            top: 5%;
+            left: 5%;
+            width: 50px;
+            height: 50px;
+            border-radius: 10%;
+            font-size: 25px;
+            cursor: pointer;
+            background: #ffffff;
+            color: #000000;
+            border: 2px solid #000000;
+        }
 
-    .menu:hover {
-      background: #000000;
-      color: #ffffff;
-    }
-.close-menu {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 40px;
-    height: 40px;
-    font-size: 25px;
-    cursor: pointer;
-    background: white;
-    color: black;
-    border: 1px solid black;
-    border-radius: 5px;
-}
-    .side-panel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 280px;
-    height: 100%;
-    background: white;
-    border-right: 2px solid black;
-    padding: 20px;
-    box-sizing: border-box;
-    z-index: 1000;
+        .menu:hover {
+            background: #000000;
+            color: #ffffff;
+        }
 
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-}
+        .close-menu {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            font-size: 25px;
+            cursor: pointer;
+            background: white;
+            color: black;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
 
-.side-panel.open {
-    transform: translateX(0);
-}
+        .side-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100%;
+            background: white;
+            border-right: 2px solid black;
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 1000;
 
-.side-panel a {
-    display: block;
-    padding: 15px;
-    color: black;
-    text-decoration: none;
-    border-bottom: 1px solid #ddd;
-}
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
 
-.side-panel a:hover {
-    background: black;
-    color: white;
-}
+        .side-panel.open {
+            transform: translateX(0);
+        }
 
-.basket-button {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    font-size: 28px;
-    background: white;
-    color: black;
-    border: 2px solid black;
-    border-radius: 10%;
-    cursor: pointer;
-    z-index: 1001;
-}
+        .side-panel a {
+            display: block;
+            padding: 15px;
+            color: black;
+            text-decoration: none;
+            border-bottom: 1px solid #ddd;
+        }
 
-.basket-button:hover {
-    background: black;
-    color: white;
-}
+        .side-panel a:hover {
+            background: black;
+            color: white;
+        }
 
-#basketCount {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background: black;
-    color: white;
-    border-radius: 50%;
-    font-size: 13px;
-    padding: 4px 7px;
-}
+        .basket-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            font-size: 28px;
+            background: white;
+            color: black;
+            border: 2px solid black;
+            border-radius: 10%;
+            cursor: pointer;
+            z-index: 1001;
+        }
 
-.basket-panel {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 300px;
-    height: 100%;
-    background: white;
-    border-left: 2px solid black;
-    padding: 20px;
-    box-sizing: border-box;
-    z-index: 1000;
+        .basket-button:hover {
+            background: black;
+            color: white;
+        }
 
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-}
+        #basketCount {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: black;
+            color: white;
+            border-radius: 50%;
+            font-size: 13px;
+            padding: 4px 7px;
+        }
 
-.basket-panel.open {
-    transform: translateX(0);
-}
+        .basket-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100%;
+            background: white;
+            border-left: 2px solid black;
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 1000;
 
-.basket-panel li {
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
-}
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
 
-.basket-button.hidden {
-    display: none;
-}
-  </style>
+        .basket-panel.open {
+            transform: translateX(0);
+        }
+
+        .basket-panel li {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .basket-button.hidden {
+            display: none;
+        }
+    </style>
 </head>
+
 <body>
-<script>
+    <script>
 
-let basket = [];
+        let basket = [];
 
-function addToBasket(title) {
-    basket.push(title);
-    updateBasket();
-}
-
-function updateBasket() {
-    const basketList = document.getElementById("basketItems");
-    const basketCount = document.getElementById("basketCount");
-
-    basketCount.textContent = basket.length;
-
-    basketList.innerHTML = "";
-
-    basket.forEach((item, index) => {
-
-        const listItem = document.createElement("li");
-        listItem.textContent = item + " ";
-
-        const removeButton = document.createElement("button");
-        removeButton.textContent = "X";
-
-        removeButton.onclick = function() {
-            basket.splice(index, 1);
+        function addToBasket(title) {
+            basket.push(title);
             updateBasket();
-        };
+        }
 
-        listItem.appendChild(removeButton);
+        function updateBasket() {
+            const basketList = document.getElementById("basketItems");
+            const basketCount = document.getElementById("basketCount");
 
-        basketList.appendChild(listItem);
-    });
-}
+            basketCount.textContent = basket.length;
 
-function toggleBasket() {
-    const basketPanel = document.getElementById("basketPanel");
-    const basketButton = document.querySelector(".basket-button");
+            basketList.innerHTML = "";
 
-    basketPanel.classList.toggle("open");
-    basketButton.classList.toggle("hidden");
-}
+            basket.forEach((item, index) => {
 
-function clearBasket() {
-    basket = [];
-    updateBasket();
-}
-function checkout() {
-    if (basket.length === 0) {
-        alert("Your basket is empty!");
-        return;
-    }
+                const listItem = document.createElement("li");
+                listItem.textContent = item + " ";
 
-    let order = "You have selected:\n\n";
+                const removeButton = document.createElement("button");
+                removeButton.textContent = "X";
 
-    basket.forEach(item => {
-        order += "- " + item + "\n";
-    });
+                removeButton.onclick = function () {
+                    basket.splice(index, 1);
+                    updateBasket();
+                };
 
-    if (confirm(order + "\nConfirm checkout?")) {
+                listItem.appendChild(removeButton);
 
-        alert("Order submitted successfully!");
+                basketList.appendChild(listItem);
+            });
+        }
 
-        basket = [];
-        updateBasket();
+        function toggleBasket() {
+            const basketPanel = document.getElementById("basketPanel");
+            const basketButton = document.querySelector(".basket-button");
 
-        toggleBasket();
-    }
-}
-</script>
-<button class="basket-button" onclick="toggleBasket()">
-    &#128722;
-    <span id="basketCount">0</span>
-</button>
+            basketPanel.classList.toggle("open");
+            basketButton.classList.toggle("hidden");
+        }
 
-<div id="basketPanel" class="basket-panel">
+        function clearBasket() {
+            basket = [];
+            updateBasket();
+        }
+        function checkout() {
+            if (basket.length === 0) {
+                alert("Your basket is empty!");
+                return;
+            }
 
-    <h2>Your Basket</h2>
+            let order = "You have selected:\n\n";
 
-    <ul id="basketItems"></ul>
+            basket.forEach(item => {
+                order += "- " + item + "\n";
+            });
 
-    <div class="basket-actions">
-        <button onclick="clearBasket()">Clear basket</button>
-        <button onclick="checkout()">Checkout</button>
-        <button onclick="toggleBasket()">Close</button>
-    </div>
+            if (confirm(order + "\nConfirm checkout?")) {
 
-</div>
+                alert("Order submitted successfully!");
 
-<div class="fab-group">
-    <div class="fab-row">
-        <button class="fab" onclick="addToBasket('White King')">&#9812;</button>
-        <button class="fab" onclick="addToBasket('White Queen')">&#9813;</button>
-        <button class="fab" onclick="addToBasket('White Rook')">&#9814;</button>
-        <button class="fab" onclick="addToBasket('White Bishop')">&#9815;</button>
-        <button class="fab" onclick="addToBasket('White Knight')">&#9816;</button>
-        <button class="fab" onclick="addToBasket('White Pawn')">&#9817;</button>
-    </div>
+                basket = [];
+                updateBasket();
 
-    <div class="fab-row">
-        <button class="fab" onclick="addToBasket('Black King')">&#9818;</button>
-        <button class="fab" onclick="addToBasket('Black Queen')">&#9819;</button>
-        <button class="fab" onclick="addToBasket('Black Rook')">&#9820;</button>
-        <button class="fab" onclick="addToBasket('Black Bishop')">&#9821;</button>
-        <button class="fab" onclick="addToBasket('Black Knight')">&#9822;</button>
-        <button class="fab" onclick="addToBasket('Black Pawn')">&#9823;</button>
-    </div>
-</div>
- 
-  <script>
-    function togglePanel() {
-    document.getElementById("sidePanel").classList.toggle("open");
-}
-    function show(text) {
-      document.getElementById("output").textContent = text;
-    }
-  </script>
-  <button id="menu" class="menu" onclick="togglePanel()">
-    ☰
-</button>
-
-<div id="sidePanel" class="side-panel">
-
-    <button class="close-menu" onclick="togglePanel()">
-        &times;
+                toggleBasket();
+            }
+        }
+    </script>
+    <button class="basket-button" onclick="toggleBasket()">
+        &#128722;
+        <span id="basketCount">0</span>
     </button>
 
-    <h2>Menu</h2>
+    <div id="basketPanel" class="basket-panel">
 
-    <a href="/">Home</a>
-    <a href="/User">User</a>
-    <a href="/Warehouse">Warehouse</a>
-    <a href="/Delivery">Delivery</a>
+        <h2>Your Basket</h2>
 
-</div>
+        <ul id="basketItems"></ul>
+
+        <div class="basket-actions">
+            <button onclick="clearBasket()">Clear basket</button>
+            <button onclick="checkout()">Checkout</button>
+            <button onclick="toggleBasket()">Close</button>
+        </div>
+
+    </div>
+
+    <div class="fab-group">
+        <div class="fab-row">
+            <button class="fab" onclick="addToBasket('White King')">&#9812;</button>
+            <button class="fab" onclick="addToBasket('White Queen')">&#9813;</button>
+            <button class="fab" onclick="addToBasket('White Rook')">&#9814;</button>
+            <button class="fab" onclick="addToBasket('White Bishop')">&#9815;</button>
+            <button class="fab" onclick="addToBasket('White Knight')">&#9816;</button>
+            <button class="fab" onclick="addToBasket('White Pawn')">&#9817;</button>
+        </div>
+
+        <div class="fab-row">
+            <button class="fab" onclick="addToBasket('Black King')">&#9818;</button>
+            <button class="fab" onclick="addToBasket('Black Queen')">&#9819;</button>
+            <button class="fab" onclick="addToBasket('Black Rook')">&#9820;</button>
+            <button class="fab" onclick="addToBasket('Black Bishop')">&#9821;</button>
+            <button class="fab" onclick="addToBasket('Black Knight')">&#9822;</button>
+            <button class="fab" onclick="addToBasket('Black Pawn')">&#9823;</button>
+        </div>
+    </div>
+
+    <script>
+        function togglePanel() {
+            document.getElementById("sidePanel").classList.toggle("open");
+        }
+        function show(text) {
+            document.getElementById("output").textContent = text;
+        }
+    </script>
+    <button id="menu" class="menu" onclick="togglePanel()">
+        ☰
+    </button>
+
+    <div id="sidePanel" class="side-panel">
+
+        <button class="close-menu" onclick="togglePanel()">
+            &times;
+        </button>
+
+        <h2>Menu</h2>
+
+        <a href="/">Home</a>
+        <a href="/User">User</a>
+        <a href="/Warehouse">Warehouse</a>
+        <a href="/Delivery">Delivery</a>
+
+    </div>
 
 </body>
+
 </html>
